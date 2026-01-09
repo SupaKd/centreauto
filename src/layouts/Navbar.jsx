@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
-import { Link, NavLink } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { useState, useEffect } from "react";
+import { Link, NavLink } from "react-router-dom";
+import { motion } from "framer-motion";
 
 function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -11,30 +11,47 @@ function Navbar() {
       setIsScrolled(window.scrollY > 50);
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Bloquer le scroll du body quand le menu mobile est ouvert
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+
+    // Cleanup au démontage
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isMobileMenuOpen]);
+
   const navLinks = [
-    { to: '/', label: 'Accueil' },
-    { to: '/services', label: 'Services' },
-    { to: '/a-propos', label: 'À propos' },
-    { to: '/contact', label: 'Contact' },
+    { to: "/", label: "Accueil" },
+    { to: "/services", label: "Services" },
+    { to: "/a-propos", label: "À propos" },
+    { to: "/contact", label: "Contact" },
   ];
 
   return (
     <motion.nav
-      className={`navbar ${isScrolled ? 'navbar--scrolled' : ''}`}
+      className={`navbar ${isScrolled ? "navbar--scrolled" : ""}`}
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.5 }}
     >
       <div className="navbar__container">
         <Link to="/" className="navbar__logo">
-<img src="/logo.jpg" alt="logo" />        </Link>
+          <img src="/logo.jpg" alt="logo" />{" "}
+        </Link>
 
         <button
-          className={`navbar__burger ${isMobileMenuOpen ? 'navbar__burger--open' : ''}`}
+          className={`navbar__burger ${
+            isMobileMenuOpen ? "navbar__burger--open" : ""
+          }`}
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           aria-label="Menu"
         >
@@ -43,13 +60,17 @@ function Navbar() {
           <span></span>
         </button>
 
-        <ul className={`navbar__menu ${isMobileMenuOpen ? 'navbar__menu--open' : ''}`}>
+        <ul
+          className={`navbar__menu ${
+            isMobileMenuOpen ? "navbar__menu--open" : ""
+          }`}
+        >
           {navLinks.map((link) => (
             <li key={link.to} className="navbar__item">
               <NavLink
                 to={link.to}
                 className={({ isActive }) =>
-                  `navbar__link ${isActive ? 'navbar__link--active' : ''}`
+                  `navbar__link ${isActive ? "navbar__link--active" : ""}`
                 }
                 onClick={() => setIsMobileMenuOpen(false)}
               >
