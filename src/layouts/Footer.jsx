@@ -10,7 +10,7 @@ function Footer() {
           <div className="footer__section">
             <h3 className="footer__title">Centre Auto Services</h3>
             <p className="footer__text">
-              Votre garage de confiance à Gex pour l'entretien et la réparation
+              Votre garage de confiance à Oyonnax pour l'entretien et la réparation
               de votre véhicule.
             </p>
           </div>
