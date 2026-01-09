@@ -1,0 +1,54 @@
+// ========================================
+// MAIN SCSS ENTRY POINT
+// Ultra Modern Architecture
+// ========================================
+
+// 1. Design System Foundation
+@use 'variables';
+@use 'mixins';
+
+// 2. Base Styles & Reset
+@use 'reset';
+
+// 3. Layout Components (Navbar, Footer)
+@use 'layout';
+
+// 4. Reusable UI Components (Buttons, Cards, etc.)
+@use 'components';
+
+// 5. Page-Specific Styles
+@use 'home';
+@use 'services';
+@use 'about';
+@use 'contact';
+@use 'legal';
+
+// ========================================
+// Global Styles & Utilities
+// ========================================
+
+// Ensure full height layout
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+// Main content area
+main {
+  flex: 1;
+}
+
+// Smooth transitions for route changes
+.page-transition {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

@@ -1,0 +1,307 @@
+// ========================================
+// HOME PAGE - MODERN LAYOUT
+// ========================================
+
+@use 'variables' as *;
+@use 'mixins' as *;
+
+// Mixin utilitaire locale pour les overlays
+@mixin absolute-full {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: linear-gradient(135deg, color('black'), color('gray-900'));
+
+  // Optimisation de l'image de fond
+  &::before {
+    @include absolute-full;
+    background: {
+      image: url('https://images.unsplash.com/photo-1486006396193-471a2abc881d?q=80&w=2000&auto=format&fit=crop');
+      size: cover;
+      position: center;
+    }
+    opacity: 0.3;
+    z-index: 0;
+    // GPU Acceleration pour éviter les saccades au scroll
+    will-change: transform;
+  }
+
+  // Overlay radial
+  &::after {
+    @include absolute-full;
+    background: radial-gradient(
+      circle at center, 
+      rgba(color('black'), 0.4) 0%, 
+      rgba(color('black'), 0.9) 100%
+    );
+    z-index: 1;
+  }
+
+  &__content {
+    @include container; // Utilisation d'un container global si défini
+    max-width: 1280px;
+    padding: space('32') 2rem;
+    position: relative;
+    z-index: 2;
+    text-align: center;
+
+    @include respond-down('md') {
+      padding: space('24') 1.5rem;
+    }
+  }
+
+  &__text {
+    max-width: 900px;
+    margin-inline: auto; // Remplacement de margin: 0 auto
+  }
+
+  &__title {
+    font-size: clamp(3rem, 10vw, 6rem);
+    font-weight: map-get($font-weight, 'black');
+    color: color('white');
+    text-transform: uppercase;
+    letter-spacing: map-get($letter-spacing, 'tighter');
+    line-height: 1.1; // Plus précis que 'none' pour le SEO/Accessibilité
+    margin-bottom: space('8');
+    text-shadow: 0 4px 20px rgba(color('black'), 0.5);
+
+    // Ligne décorative (Underline)
+    &::after {
+      content: '';
+      display: block;
+      width: 100px;
+      height: 6px;
+      background: linear-gradient(90deg, color('primary'), color('primary-light'));
+      margin: space('8') auto 0;
+      border-radius: radius('full');
+      box-shadow: shadow('glow-primary');
+    }
+  }
+
+  &__subtitle {
+    font-size: clamp(1rem, 3vw, 1.5rem);
+    color: color('gray-400');
+    font-weight: map-get($font-weight, 'normal');
+    text-transform: uppercase;
+    letter-spacing: map-get($letter-spacing, 'widest');
+    margin-bottom: space('12');
+  }
+
+  &__buttons {
+    display: flex;
+    gap: space('6');
+    justify-content: center;
+    align-items: center;
+
+    @include respond-down('sm') {
+      flex-direction: column;
+      width: 100%;
+      max-width: 300px;
+      margin-inline: auto;
+
+      // Force les boutons à prendre toute la largeur sur mobile
+      > * { width: 100%; }
+    }
+  }
+}
+
+// Section reusable pattern
+%section-padding {
+  padding: space('20') 0;
+  @include respond-down('md') { padding: space('16') 0; }
+  @include respond-down('sm') { padding: space('12') 0; }
+}
+
+.home {
+  &__services {
+    @extend %section-padding;
+    background-color: color('white');
+  }
+
+  &__about {
+    @extend %section-padding;
+    background: linear-gradient(180deg, color('gray-50'), color('white'));
+    position: relative;
+    overflow: hidden;
+  }
+
+  &__cta {
+    @extend %section-padding;
+    position: relative;
+    text-align: center;
+    background: linear-gradient(135deg, color('gray-900'), color('black'));
+    color: color('white');
+
+    &::before {
+      @include absolute-full;
+      background: {
+        image: url('https://images.unsplash.com/photo-1530046339160-ce3e530c7d2f?q=80&w=2000&auto=format&fit=crop');
+        size: cover;
+        position: center;
+        attachment: fixed; // Attention: désactiver sur iOS si bug de performance
+      }
+      opacity: 0.2;
+      z-index: 0;
+    }
+  }
+}
+
+
+
+.home {
+  /* Espacement entre les grandes sections */
+  section {
+    padding: 80px 0;
+  }
+
+  /* --- Section Services --- */
+  &__services {
+    background-color: #f9f9f9;
+
+    &-header {
+      text-align: center;
+      margin-bottom: 50px;
+
+      .section-title {
+        font-size: 2.5rem;
+        color: #333;
+        margin-bottom: 10px;
+      }
+
+      .section-subtitle {
+        font-size: 1.1rem;
+        color: #666;
+      }
+    }
+
+    &-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+      margin-bottom: 40px;
+    }
+
+    &-cta {
+      text-align: center;
+    }
+  }
+
+  /* --- Section Pourquoi nous choisir (About) --- */
+  &__about {
+    background-color: #ffffff;
+
+    &-content {
+      text-align: center;
+
+      .section-title {
+        font-size: 2.2rem;
+        margin-bottom: 40px;
+      }
+    }
+
+    &-features {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      gap: 30px;
+      margin-bottom: 40px;
+
+      .feature {
+        flex: 1;
+        min-width: 250px;
+        padding: 20px;
+        
+        h3 {
+          color: #c32026; /* Bleu primaire */
+          font-size: 1.5rem;
+          margin-bottom: 15px;
+        }
+
+        p {
+          color: #4b5563;
+          line-height: 1.6;
+        }
+      }
+    }
+  }
+
+  /* --- Section Appel à l'action (CTA) --- */
+  &__cta {
+    background-color: #1e293b; /* Bleu foncé / Ardoise */
+    color: #ffffff;
+    text-align: center;
+
+    &-content {
+      h2 {
+        font-size: 2.5rem;
+        margin-bottom: 15px;
+      }
+
+      p {
+        font-size: 1.25rem;
+        margin-bottom: 30px;
+        opacity: 0.9;
+      }
+    }
+  }
+}
+
+/* --- Boutons et Utilitaires --- */
+.btn {
+  display: inline-block;
+  padding: 12px 30px;
+  border-radius: 6px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  cursor: pointer;
+
+  &--primary {
+    background-color: #c32026;
+    color: #fff;
+
+    &:hover {
+      background-color: #c32026;
+      transform: translateY(-2px);
+    }
+  }
+
+  &--secondary {
+    border: 2px solid #c32026;
+    color: #c32026;
+
+    &:hover {
+      background-color: #c32026;
+      color: #fff;
+    }
+  }
+}
+
+/* --- Adaptabilité Mobile --- */
+@media (max-width: 768px) {
+  .home {
+    section {
+      padding: 50px 0;
+    }
+
+    &__services-header .section-title {
+      font-size: 2rem;
+    }
+
+    &__about-features {
+      flex-direction: column;
+    }
+  }
+}

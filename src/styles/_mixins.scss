@@ -1,0 +1,386 @@
+// ========================================
+// MIXINS - MODERN UTILITIES
+// ========================================
+
+@use 'variables' as *;
+
+// === RESPONSIVE BREAKPOINTS ===
+@mixin respond-to($breakpoint) {
+  $size: map-get($breakpoints, $breakpoint);
+
+  @if $size {
+    @media (min-width: $size) {
+      @content;
+    }
+  } @else {
+    @warn "Unknown breakpoint: #{$breakpoint}";
+  }
+}
+
+@mixin respond-down($breakpoint) {
+  $size: map-get($breakpoints, $breakpoint);
+
+  @if $size {
+    @media (max-width: ($size - 1px)) {
+      @content;
+    }
+  }
+}
+
+// === FLEXBOX UTILITIES ===
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@mixin flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+// === POSITION UTILITIES ===
+@mixin absolute-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@mixin absolute-cover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+// === CONTAINER ===
+@mixin container {
+  width: 100%;
+  max-width: $container-max-width;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: $container-padding;
+  padding-right: $container-padding;
+
+  @include respond-down('md') {
+    padding-left: space('6');
+    padding-right: space('6');
+  }
+
+  @include respond-down('sm') {
+    padding-left: space('4');
+    padding-right: space('4');
+  }
+}
+
+// === TYPOGRAPHY ===
+@mixin heading($size: '4xl', $weight: 'bold') {
+  font-family: map-get($font-family, 'heading');
+  font-size: map-get($font-size, $size);
+  font-weight: map-get($font-weight, $weight);
+  line-height: map-get($line-height, 'tight');
+  letter-spacing: map-get($letter-spacing, 'tight');
+}
+
+@mixin text-gradient($color1: color('primary'), $color2: color('primary-light')) {
+  background: linear-gradient(135deg, $color1 0%, $color2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+@mixin truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@mixin line-clamp($lines: 2) {
+  display: -webkit-box;
+  -webkit-line-clamp: $lines;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+// === TRANSITIONS & ANIMATIONS ===
+@mixin transition($properties...) {
+  $transitions: ();
+
+  @each $prop in $properties {
+    $transitions: append($transitions, #{$prop} map-get($transition, 'base'), comma);
+  }
+
+  transition: $transitions;
+}
+
+@mixin hover-lift($distance: 10px) {
+  transition: transform map-get($transition, 'base'), box-shadow map-get($transition, 'base');
+
+  &:hover {
+    transform: translateY(-#{$distance});
+  }
+}
+
+@mixin hover-scale($scale: 1.05) {
+  transition: transform map-get($transition, 'base');
+
+  &:hover {
+    transform: scale($scale);
+  }
+}
+
+// === GLASS MORPHISM ===
+@mixin glass($opacity: 0.95, $blur: 10px) {
+  background-color: rgba(255, 255, 255, $opacity);
+  backdrop-filter: blur($blur);
+  -webkit-backdrop-filter: blur($blur);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+@mixin glass-dark($opacity: 0.8, $blur: 10px) {
+  background-color: rgba(26, 26, 26, $opacity);
+  backdrop-filter: blur($blur);
+  -webkit-backdrop-filter: blur($blur);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+// === GRADIENT BACKGROUNDS ===
+@mixin gradient-primary {
+  background: linear-gradient(135deg, color('primary-dark') 0%, color('primary') 100%);
+}
+
+@mixin gradient-dark {
+  background: linear-gradient(135deg, color('gray-900') 0%, color('gray-800') 100%);
+}
+
+@mixin gradient-overlay($color: color('black'), $opacity-start: 0.8, $opacity-end: 0.4) {
+  background: linear-gradient(
+    135deg,
+    rgba($color, $opacity-start) 0%,
+    rgba($color, $opacity-end) 100%
+  );
+}
+
+@mixin gradient-radial($color: color('primary'), $opacity: 0.1) {
+  background: radial-gradient(
+    circle at center,
+    rgba($color, $opacity) 0%,
+    transparent 70%
+  );
+}
+
+// === SCROLLBAR STYLING ===
+@mixin custom-scrollbar($width: 10px, $track: color('gray-100'), $thumb: color('gray-500')) {
+  &::-webkit-scrollbar {
+    width: $width;
+    height: $width;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: $track;
+    border-radius: radius('base');
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $thumb;
+    border-radius: radius('base');
+
+    &:hover {
+      background: color('primary');
+    }
+  }
+}
+
+// === BUTTONS ===
+@mixin button-base {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: space('2');
+  padding: space('3') space('6');
+  font-size: map-get($font-size, 'sm');
+  font-weight: map-get($font-weight, 'semibold');
+  text-transform: uppercase;
+  letter-spacing: map-get($letter-spacing, 'wider');
+  text-decoration: none;
+  border: 2px solid transparent;
+  border-radius: radius('md');
+  cursor: pointer;
+  transition: all map-get($transition, 'base');
+  white-space: nowrap;
+  user-select: none;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+@mixin button-primary {
+  @include button-base;
+  background-color: color('primary');
+  color: color('white');
+  border-color: color('primary');
+
+  &:hover:not(:disabled) {
+    background-color: color('primary-dark');
+    border-color: color('primary-dark');
+    box-shadow: shadow('glow-primary');
+    transform: translateY(-2px);
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0);
+  }
+}
+
+@mixin button-outline {
+  @include button-base;
+  background-color: transparent;
+  color: color('primary');
+  border-color: color('primary');
+
+  &:hover:not(:disabled) {
+    background-color: color('primary');
+    color: color('white');
+    box-shadow: shadow('glow-primary');
+  }
+}
+
+@mixin button-ghost {
+  @include button-base;
+  background-color: transparent;
+  color: color('gray-700');
+  border-color: transparent;
+
+  &:hover:not(:disabled) {
+    background-color: color('gray-100');
+    color: color('primary');
+  }
+}
+
+// === CARDS ===
+@mixin card-base {
+  background-color: color('white');
+  border-radius: radius('xl');
+  border: 1px solid color('gray-200');
+  box-shadow: shadow('sm');
+  @include transition(transform, box-shadow, border-color);
+}
+
+@mixin card-hover {
+  &:hover {
+    transform: translateY(-8px);
+    box-shadow: shadow('xl');
+    border-color: color('primary-alpha');
+  }
+}
+
+// === FOCUS STATES ===
+@mixin focus-ring($color: color('primary')) {
+  &:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba($color, 0.2);
+    border-color: $color;
+  }
+}
+
+// === SKELETON LOADING ===
+@mixin skeleton {
+  position: relative;
+  overflow: hidden;
+  background-color: color('gray-200');
+
+  &::after {
+    content: '';
+    @include absolute-cover;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.5),
+      transparent
+    );
+    animation: skeleton-loading 1.5s infinite;
+  }
+}
+
+@keyframes skeleton-loading {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+// === OVERLAY ===
+@mixin overlay($color: color('black'), $opacity: 0.5) {
+  position: relative;
+
+  &::before {
+    content: '';
+    @include absolute-cover;
+    background-color: rgba($color, $opacity);
+    z-index: 1;
+  }
+
+  > * {
+    position: relative;
+    z-index: 2;
+  }
+}
+
+// === ASPECT RATIO ===
+@mixin aspect-ratio($width, $height) {
+  position: relative;
+
+  &::before {
+    content: '';
+    display: block;
+    padding-bottom: percentage($height / $width);
+  }
+
+  > * {
+    @include absolute-cover;
+  }
+}
+
+// === HIDE/SHOW UTILITIES ===
+@mixin visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+// === SMOOTH FONT RENDERING ===
+@mixin font-smoothing {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+// === SELECTION STYLE ===
+@mixin selection($bg: color('primary'), $color: color('white')) {
+  ::selection {
+    background-color: $bg;
+    color: $color;
+  }
+
+  ::-moz-selection {
+    background-color: $bg;
+    color: $color;
+  }
+}

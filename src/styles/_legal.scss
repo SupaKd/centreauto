@@ -1,0 +1,102 @@
+// ========================================
+// LEGAL PAGE - MODERN LAYOUT
+// ========================================
+
+@use 'variables' as *;
+@use 'mixins' as *;
+
+// ===================================
+// LEGAL CONTENT
+// ===================================
+
+.legal-content {
+  padding: space('20') 0;
+
+  @include respond-down('md') {
+    padding: space('16') 0;
+  }
+
+  @include respond-down('sm') {
+    padding: space('12') 0;
+  }
+  background-color: color('white');
+
+  .container {
+    max-width: 900px;
+  }
+
+  .legal-section {
+    margin-bottom: space('12');
+    padding-bottom: space('8');
+    border-bottom: 1px solid color('gray-200');
+
+    &:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+    }
+
+    h2 {
+      font-size: map-get($font-size, '2xl');
+      font-weight: map-get($font-weight, 'bold');
+      color: color('gray-900');
+      margin-bottom: space('6');
+      text-transform: uppercase;
+      letter-spacing: map-get($letter-spacing, 'wide');
+      display: flex;
+      align-items: center;
+      gap: space('3');
+
+      // Square accent
+      &::before {
+        content: '';
+        width: 16px;
+        height: 16px;
+        background: linear-gradient(135deg, color('primary') 0%, color('primary-light') 100%);
+        border-radius: radius('sm');
+        flex-shrink: 0;
+      }
+    }
+
+    p {
+      font-size: map-get($font-size, 'base');
+      color: color('gray-700');
+      line-height: map-get($line-height, 'loose');
+      margin-bottom: space('5');
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      a {
+        color: color('primary');
+        font-weight: map-get($font-weight, 'semibold');
+        text-decoration: underline;
+        text-underline-offset: 3px;
+        text-decoration-color: transparent;
+        transition: text-decoration-color map-get($transition, 'base');
+
+        &:hover {
+          text-decoration-color: color('primary');
+        }
+      }
+    }
+
+    ul,
+    ol {
+      margin-left: space('8');
+      margin-bottom: space('5');
+      list-style: initial;
+
+      li {
+        font-size: map-get($font-size, 'base');
+        color: color('gray-700');
+        line-height: map-get($line-height, 'loose');
+        margin-bottom: space('2');
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+    }
+  }
+}

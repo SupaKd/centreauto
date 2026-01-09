@@ -1,0 +1,225 @@
+// ========================================
+// MODERN CSS RESET & BASE STYLES
+// ========================================
+
+@use 'variables' as *;
+@use 'mixins' as *;
+
+// === MODERN CSS RESET ===
+
+// 1. Use a more intuitive box-sizing model
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+// 2. Remove default margin & padding
+* {
+  margin: 0;
+  padding: 0;
+}
+
+// 3. Allow percentage-based heights
+html,
+body {
+  height: 100%;
+}
+
+// 4. Add smooth scrolling
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: $header-height-scrolled;
+}
+
+// 5. Improve text rendering
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+// 6. Improve media defaults
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+// 7. Remove built-in form typography styles
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+// 8. Avoid text overflows
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: break-word;
+}
+
+// 9. Create a root stacking context
+#root,
+#__next {
+  isolation: isolate;
+}
+
+// === BASE TYPOGRAPHY ===
+body {
+  font-family: map-get($font-family, 'primary');
+  font-size: map-get($font-size, 'base');
+  font-weight: map-get($font-weight, 'normal');
+  line-height: map-get($line-height, 'normal');
+  color: color('gray-900');
+  background-color: color('gray-50');
+  overflow-x: hidden;
+}
+
+// === HEADINGS ===
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: map-get($font-family, 'heading');
+  font-weight: map-get($font-weight, 'bold');
+  line-height: map-get($line-height, 'tight');
+  color: color('gray-900');
+}
+
+h1 {
+  font-size: map-get($font-size, '5xl');
+
+  @include respond-down('md') {
+    font-size: map-get($font-size, '4xl');
+  }
+}
+
+h2 {
+  font-size: map-get($font-size, '4xl');
+
+  @include respond-down('md') {
+    font-size: map-get($font-size, '3xl');
+  }
+}
+
+h3 {
+  font-size: map-get($font-size, '3xl');
+
+  @include respond-down('md') {
+    font-size: map-get($font-size, '2xl');
+  }
+}
+
+h4 {
+  font-size: map-get($font-size, '2xl');
+}
+
+h5 {
+  font-size: map-get($font-size, 'xl');
+}
+
+h6 {
+  font-size: map-get($font-size, 'lg');
+}
+
+// === LINKS ===
+a {
+  color: inherit;
+  text-decoration: none;
+  @include transition(color, opacity);
+}
+
+// === LISTS ===
+ul,
+ol {
+  list-style: none;
+}
+
+// === BUTTONS ===
+button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+// === SELECTION STYLING ===
+::selection {
+  background-color: color('primary');
+  color: color('white');
+}
+
+::-moz-selection {
+  background-color: color('primary');
+  color: color('white');
+}
+
+// === CUSTOM SCROLLBAR ===
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: color('gray-100');
+}
+
+::-webkit-scrollbar-thumb {
+  background: color('gray-400');
+  border-radius: radius('base');
+  border: 2px solid color('gray-100');
+
+  &:hover {
+    background: color('primary');
+  }
+}
+
+// === FOCUS VISIBLE STYLES ===
+:focus-visible {
+  outline: 2px solid color('primary');
+  outline-offset: 2px;
+}
+
+// === UTILITY CLASSES ===
+
+// Container
+.container {
+  @include container;
+}
+
+// Container with reduced padding
+.container-narrow {
+  @include container;
+  max-width: 800px;
+}
+
+// Section spacing
+.section {
+  padding: space('20') 0;
+
+  @include respond-down('md') {
+    padding: space('16') 0;
+  }
+
+  @include respond-down('sm') {
+    padding: space('12') 0;
+  }
+}
+
+// Visually hidden (for screen readers)
+.sr-only {
+  @include visually-hidden;
+}

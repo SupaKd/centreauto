@@ -1,0 +1,399 @@
+// ========================================
+// LAYOUT - NAVBAR & FOOTER
+// ========================================
+
+@use 'variables' as *;
+@use 'mixins' as *;
+
+// ===================================
+// NAVBAR - ULTRA MODERN
+// ===================================
+
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: map-get($z-index, 'sticky');
+  padding: space('6') 0;
+  transition: all map-get($transition, 'base');
+  background-color: transparent;
+
+  // Scrolled state with glass morphism
+  &--scrolled {
+    padding: space('4') 0;
+    @include glass(0.95, 12px);
+    box-shadow: shadow('md');
+
+    .navbar__logo-text {
+      font-size: map-get($font-size, 'xl');
+    }
+
+    .navbar__link {
+      color: color('gray-700');
+
+      &::before {
+        background: linear-gradient(90deg, color('primary') 0%, color('primary-light') 100%);
+      }
+    }
+  }
+
+  &__container {
+    @include container;
+    @include flex-between;
+  }
+
+  // Logo Section
+  &__logo {
+    @include flex-center;
+    gap: space('3');
+    position: relative;
+    z-index: map-get($z-index, 'dropdown');
+
+    img {
+      height: 45px;
+      width: auto;
+      transition: transform map-get($transition, 'base');
+      filter: drop-shadow(shadow('sm'));
+      border-radius: 3rem;
+
+      &:hover {
+        transform: scale(1.05) rotate(-2deg);
+      }
+    }
+
+    &-text {
+      font-size: map-get($font-size, '2xl');
+      font-weight: map-get($font-weight, 'black');
+      text-transform: uppercase;
+      letter-spacing: map-get($letter-spacing, 'tight');
+      @include text-gradient(color('gray-900'), color('primary'));
+      transition: font-size map-get($transition, 'base');
+
+      @include respond-down('md') {
+        display: none;
+      }
+    }
+  }
+
+  // Navigation Menu
+  &__menu {
+    display: flex;
+    align-items: center;
+    gap: space('8');
+
+    @include respond-down('md') {
+      position: fixed;
+      top: 0;
+      right: -100%;
+      bottom: 0;
+      width: min(320px, 80%);
+      flex-direction: column;
+      justify-content: center;
+      gap: space('6');
+      @include glass-dark(0.98, 10px);
+      box-shadow: shadow('2xl');
+      transition: right map-get($transition, 'slow');
+      padding: space('8');
+
+      &--open {
+        right: 0;
+      }
+    }
+  }
+
+  &__link {
+    position: relative;
+    color: color('white');
+    font-size: map-get($font-size, 'sm');
+    font-weight: map-get($font-weight, 'semibold');
+    text-transform: uppercase;
+    letter-spacing: map-get($letter-spacing, 'wider');
+    padding: space('2') space('3');
+    transition: color map-get($transition, 'base');
+
+    // Animated underline
+    &::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, color('primary') 0%, color('primary-light') 100%);
+      transform: translateX(-50%);
+      transition: width map-get($transition, 'base');
+      border-radius: radius('full');
+    }
+
+    &:hover,
+    &--active {
+      color: color('primary-light');
+
+      &::before {
+        width: 100%;
+      }
+    }
+
+    @include respond-down('md') {
+      font-size: map-get($font-size, 'xl');
+      color: color('white');
+      width: 100%;
+      text-align: center;
+      padding: space('3') space('4');
+
+      &::before {
+        bottom: 50%;
+        left: 0;
+        width: 3px;
+        height: 0;
+        transform: translateY(50%);
+        transition: height map-get($transition, 'base');
+      }
+
+      &:hover::before,
+      &--active::before {
+        height: 100%;
+        width: 3px;
+      }
+    }
+  }
+
+  // Burger Button - Modern Animation
+  &__burger {
+    display: none;
+    position: relative;
+    width: 32px;
+    height: 24px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    z-index: map-get($z-index, 'dropdown');
+
+    @include respond-down('md') {
+      display: block;
+    }
+
+    span {
+      position: absolute;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background-color: color('white');
+      border-radius: radius('full');
+      transition: all map-get($transition, 'base');
+      transform-origin: center;
+
+      &:nth-child(1) {
+        top: 0;
+      }
+
+      &:nth-child(2) {
+        top: 50%;
+        transform: translateY(-50%);
+      }
+
+      &:nth-child(3) {
+        bottom: 0;
+      }
+    }
+
+    // Open state animation
+    &--open {
+      span {
+        background-color: color('primary');
+
+        &:nth-child(1) {
+          top: 50%;
+          transform: translateY(-50%) rotate(45deg);
+        }
+
+        &:nth-child(2) {
+          opacity: 0;
+          transform: translateX(20px);
+        }
+
+        &:nth-child(3) {
+          bottom: 50%;
+          transform: translateY(50%) rotate(-45deg);
+        }
+      }
+    }
+  }
+}
+
+// ===================================
+// FOOTER - MODERN & PROFESSIONAL
+// ===================================
+
+.footer {
+  position: relative;
+  background: linear-gradient(180deg, color('gray-900') 0%, color('black') 100%);
+  color: color('gray-300');
+  padding: space('20') 0 space('8');
+  margin-top: auto;
+  overflow: hidden;
+
+  // Decorative top border with gradient
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, color('primary') 0%, color('primary-light') 50%, color('primary') 100%);
+  }
+
+  // Decorative background pattern
+  &::after {
+    content: '';
+    @include absolute-cover;
+    background-image:
+      radial-gradient(circle at 20% 50%, rgba(color('primary'), 0.05) 0%, transparent 50%),
+      radial-gradient(circle at 80% 80%, rgba(color('primary'), 0.03) 0%, transparent 50%);
+    pointer-events: none;
+  }
+
+  &__container {
+    @include container;
+    position: relative;
+    z-index: 1;
+  }
+
+  &__content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: space('12');
+    margin-bottom: space('16');
+
+    @include respond-down('md') {
+      grid-template-columns: 1fr;
+      gap: space('10');
+      text-align: center;
+    }
+  }
+
+  &__section {
+    display: flex;
+    flex-direction: column;
+    gap: space('5');
+  }
+
+  &__title {
+    font-size: map-get($font-size, 'lg');
+    font-weight: map-get($font-weight, 'bold');
+    text-transform: uppercase;
+    letter-spacing: map-get($letter-spacing, 'wider');
+    color: color('white');
+    position: relative;
+    padding-bottom: space('3');
+    margin-bottom: space('2');
+
+    // Gradient underline
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 60px;
+      height: 3px;
+      background: linear-gradient(90deg, color('primary') 0%, transparent 100%);
+      border-radius: radius('full');
+
+      @include respond-down('md') {
+        left: 50%;
+        transform: translateX(-50%);
+      }
+    }
+  }
+
+  &__text {
+    color: color('gray-400');
+    font-size: map-get($font-size, 'sm');
+    line-height: map-get($line-height, 'relaxed');
+    max-width: 300px;
+
+    @include respond-down('md') {
+      max-width: 100%;
+    }
+  }
+
+  &__links {
+    display: flex;
+    flex-direction: column;
+    gap: space('3');
+  }
+
+  &__link {
+    position: relative;
+    color: color('gray-400');
+    font-size: map-get($font-size, 'sm');
+    transition: all map-get($transition, 'base');
+    display: inline-flex;
+    align-items: center;
+    gap: space('2');
+    width: fit-content;
+
+    @include respond-down('md') {
+      margin: 0 auto;
+    }
+
+    // Hover arrow
+    &::before {
+      content: '→';
+      opacity: 0;
+      transform: translateX(-10px);
+      transition: all map-get($transition, 'base');
+    }
+
+    &:hover {
+      color: color('primary-light');
+      padding-left: space('3');
+
+      &::before {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+  }
+
+  // Bottom Bar
+  &__bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: space('6');
+    padding-top: space('8');
+    border-top: 1px solid rgba(color('white'), 0.1);
+
+    @include respond-down('md') {
+      flex-direction: column;
+      text-align: center;
+      gap: space('4');
+    }
+  }
+
+  &__copyright {
+    color: color('gray-500');
+    font-size: map-get($font-size, 'xs');
+    letter-spacing: map-get($letter-spacing, 'wide');
+  }
+
+  &__legal {
+    color: color('gray-500');
+    font-size: map-get($font-size, 'xs');
+    transition: color map-get($transition, 'base');
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: transparent;
+    transition: text-decoration-color map-get($transition, 'base');
+
+    &:hover {
+      color: color('white');
+      text-decoration-color: color('primary');
+    }
+  }
+}

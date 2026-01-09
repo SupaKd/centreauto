@@ -1,0 +1,188 @@
+// ========================================
+// ABOUT PAGE - MODERN LAYOUT
+// ========================================
+
+@use 'variables' as *;
+@use 'mixins' as *;
+
+// ===================================
+// ABOUT CONTENT
+// ===================================
+
+.about-content {
+  padding: space('20') 0;
+
+  @include respond-down('md') {
+    padding: space('16') 0;
+  }
+
+  @include respond-down('sm') {
+    padding: space('12') 0;
+  }
+  background-color: color('white');
+
+  .container {
+    max-width: 900px;
+  }
+
+  .section-title {
+    font-size: map-get($font-size, '3xl');
+    font-weight: map-get($font-weight, 'bold');
+    color: color('gray-900');
+    margin-bottom: space('8');
+    display: flex;
+    align-items: center;
+    gap: space('4');
+
+    &::before {
+      content: '';
+      width: 40px;
+      height: 4px;
+      background: linear-gradient(90deg, color('primary') 0%, color('primary-light') 100%);
+      border-radius: radius('full');
+      flex-shrink: 0;
+    }
+  }
+}
+
+// ===================================
+// ABOUT STORY
+// ===================================
+
+.about-story {
+  margin-bottom: space('20');
+
+  .about-text {
+    font-size: map-get($font-size, 'lg');
+    color: color('gray-700');
+    line-height: map-get($line-height, 'relaxed');
+    margin-bottom: space('6');
+
+    &:first-letter {
+      font-size: map-get($font-size, '3xl');
+      font-weight: map-get($font-weight, 'bold');
+      color: color('primary');
+      float: left;
+      line-height: 1;
+      margin-right: space('2');
+    }
+  }
+}
+
+// ===================================
+// VALUES GRID
+// ===================================
+
+.values-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: space('8');
+  margin-bottom: space('20');
+
+  @include respond-down('sm') {
+    grid-template-columns: 1fr;
+    gap: space('6');
+  }
+}
+
+.value-item {
+  @include card-base;
+  padding: space('8');
+  border-top: 4px solid color('gray-300');
+  transition: all map-get($transition, 'base');
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, color('primary') 0%, color('primary-light') 100%);
+    transform: scaleX(0);
+    transition: transform map-get($transition, 'base');
+  }
+
+  &:hover {
+    transform: translateY(-8px);
+    box-shadow: shadow('lg');
+    border-top-color: transparent;
+
+    &::before {
+      transform: scaleX(1);
+    }
+  }
+
+  h3 {
+    font-size: map-get($font-size, 'xl');
+    font-weight: map-get($font-weight, 'bold');
+    color: color('gray-900');
+    margin-bottom: space('4');
+    text-transform: uppercase;
+    letter-spacing: map-get($letter-spacing, 'wide');
+  }
+
+  p {
+    font-size: map-get($font-size, 'sm');
+    color: color('gray-600');
+    line-height: map-get($line-height, 'relaxed');
+  }
+}
+
+// ===================================
+// EQUIPMENT SECTION
+// ===================================
+
+.about-equipment {
+  @include card-base;
+  background: linear-gradient(135deg, color('gray-900') 0%, color('black') 100%);
+  color: color('white');
+  padding: space('12');
+  border-radius: radius('2xl');
+  border: 1px solid rgba(color('white'), 0.1);
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    @include absolute-cover;
+    @include gradient-radial(color('primary'), 0.1);
+  }
+
+  .section-title {
+    color: color('white');
+    margin-bottom: space('8');
+
+    &::before {
+      background: linear-gradient(90deg, color('primary-light') 0%, transparent 100%);
+    }
+  }
+
+  .equipment-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: space('4');
+    position: relative;
+    z-index: 1;
+
+    li {
+      padding-left: space('8');
+      position: relative;
+      font-size: map-get($font-size, 'base');
+      font-weight: map-get($font-weight, 'medium');
+      color: color('gray-300');
+      line-height: map-get($line-height, 'relaxed');
+
+      &::before {
+        content: '✓';
+        position: absolute;
+        left: 0;
+        color: color('primary-light');
+        font-weight: map-get($font-weight, 'black');
+        font-size: map-get($font-size, 'xl');
+      }
+    }
+  }
+}

@@ -1,0 +1,254 @@
+// ========================================
+// CONTACT PAGE - MODERN LAYOUT
+// ========================================
+
+@use 'variables' as *;
+@use 'mixins' as *;
+
+// ===================================
+// CONTACT CONTENT
+// ===================================
+
+.contact-content {
+  padding: space('20') 0;
+
+  @include respond-down('md') {
+    padding: space('16') 0;
+  }
+
+  @include respond-down('sm') {
+    padding: space('12') 0;
+  }
+  background-color: color('gray-50');
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: 2fr 3fr;
+  gap: space('12');
+  align-items: start;
+
+  @include respond-down('lg') {
+    grid-template-columns: 1fr;
+    gap: space('10');
+  }
+}
+
+// ===================================
+// CONTACT INFO SIDEBAR
+// ===================================
+
+.contact-info {
+  @include card-base;
+  background: linear-gradient(135deg, color('gray-900') 0%, color('black') 100%);
+  color: color('white');
+  padding: space('12');
+  border-radius: radius('2xl');
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(color('white'), 0.1);
+
+  &::before {
+    content: '';
+    @include absolute-cover;
+    @include gradient-radial(color('primary'), 0.1);
+  }
+
+  h2 {
+    font-size: map-get($font-size, '2xl');
+    font-weight: map-get($font-weight, 'bold');
+    margin-bottom: space('8');
+    text-transform: uppercase;
+    letter-spacing: map-get($letter-spacing, 'wider');
+    color: color('primary-light');
+    position: relative;
+    z-index: 1;
+  }
+
+  .contact-item {
+    margin-bottom: space('8');
+    position: relative;
+    z-index: 1;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    h3 {
+      font-size: map-get($font-size, 'xs');
+      text-transform: uppercase;
+      letter-spacing: map-get($letter-spacing, 'widest');
+      color: color('gray-500');
+      margin-bottom: space('2');
+      font-weight: map-get($font-weight, 'semibold');
+    }
+
+    p,
+    .contact-link {
+      font-size: map-get($font-size, 'lg');
+      color: color('white');
+      line-height: map-get($line-height, 'relaxed');
+      transition: all map-get($transition, 'base');
+    }
+
+    .contact-link {
+      display: inline-block;
+
+      &:hover {
+        color: color('primary-light');
+        transform: translateX(4px);
+      }
+    }
+  }
+}
+
+// ===================================
+// CONTACT FORM
+// ===================================
+
+.contact-form-wrapper {
+  @include card-base;
+  background: color('white');
+  padding: space('12');
+  border-radius: radius('2xl');
+
+  h2 {
+    font-size: map-get($font-size, '2xl');
+    font-weight: map-get($font-weight, 'bold');
+    color: color('gray-900');
+    margin-bottom: space('8');
+  }
+}
+
+.contact-form {
+  display: grid;
+  gap: space('6');
+
+  .form-group {
+    @include flex-column;
+    gap: space('2');
+
+    label {
+      font-size: map-get($font-size, 'sm');
+      font-weight: map-get($font-weight, 'semibold');
+      color: color('gray-700');
+      text-transform: uppercase;
+      letter-spacing: map-get($letter-spacing, 'wide');
+    }
+
+    input,
+    textarea {
+      padding: space('4') space('5');
+      border: 2px solid color('gray-200');
+      border-radius: radius('lg');
+      font-family: inherit;
+      font-size: map-get($font-size, 'base');
+      color: color('gray-900');
+      background-color: color('white');
+      transition: all map-get($transition, 'base');
+
+      &::placeholder {
+        color: color('gray-400');
+      }
+
+      &:focus {
+        @include focus-ring;
+      }
+
+      &.input-error {
+        border-color: color('error');
+        background-color: rgba(color('error'), 0.05);
+      }
+    }
+
+    textarea {
+      min-height: 150px;
+      resize: vertical;
+    }
+  }
+
+  .error-message {
+    color: color('error');
+    font-size: map-get($font-size, 'xs');
+    font-weight: map-get($font-weight, 'medium');
+    margin-top: space('1');
+  }
+
+  button {
+    margin-top: space('4');
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      background-color: color('gray-400');
+      border-color: color('gray-400');
+    }
+  }
+}
+
+// ===================================
+// FORM MESSAGES
+// ===================================
+
+.form-message {
+  padding: space('4') space('5');
+  border-radius: radius('lg');
+  font-size: map-get($font-size, 'sm');
+  font-weight: map-get($font-weight, 'medium');
+  text-align: center;
+  margin-top: space('6');
+
+  &--success {
+    background-color: rgba(color('success'), 0.1);
+    color: color('success');
+    border: 2px solid rgba(color('success'), 0.3);
+  }
+
+  &--error {
+    background-color: rgba(color('error'), 0.1);
+    color: color('error');
+    border: 2px solid rgba(color('error'), 0.3);
+  }
+}
+
+// ===================================
+// MAP SECTION
+// ===================================
+
+.contact-map {
+  padding: space('16') 0 space('24');
+
+  .section-title {
+    text-align: center;
+    font-size: map-get($font-size, '3xl');
+    font-weight: map-get($font-weight, 'bold');
+    color: color('gray-900');
+    margin-bottom: space('12');
+
+    &::after {
+      content: '';
+      display: block;
+      width: 80px;
+      height: 4px;
+      background: linear-gradient(90deg, color('primary') 0%, color('primary-light') 100%);
+      margin: space('6') auto 0;
+      border-radius: radius('full');
+    }
+  }
+
+  .map-wrapper {
+    border-radius: radius('2xl');
+    overflow: hidden;
+    box-shadow: shadow('xl');
+    border: 4px solid color('white');
+
+    iframe {
+      filter: grayscale(0.3) contrast(1.1);
+      transition: filter map-get($transition, 'base');
+
+      &:hover {
+        filter: grayscale(0) contrast(1);
+      }
+    }
+  }
+}
